@@ -22,6 +22,13 @@ pipenv shell
 ./manage.py runserver
 ```
 
+## Initialize mock data
+
+```bash
+# Refer to init_data.py for the mock data
+./manage.py init_data
+```
+
 ## Generate models graph
 
 ```bash

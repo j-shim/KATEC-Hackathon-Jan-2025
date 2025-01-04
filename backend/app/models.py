@@ -24,8 +24,8 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ["user", "name", "date"]
-        unique_together = ["user", "name", "date"]
+        ordering = ["user", "date", "name"]
+        unique_together = ["user", "date", "name"]
 
     def __str__(self) -> str:
-        return f"{self.date} {self.name}"
+        return f"{self.user} - {self.date} - {self.name} - {'Done' if self.isDone else 'Not done'}"
