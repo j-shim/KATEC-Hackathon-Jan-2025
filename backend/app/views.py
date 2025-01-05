@@ -1,6 +1,54 @@
 from rest_framework import generics
-from .models import Task
-from .serializers import TaskListCreateSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_204_NO_CONTENT,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_404_NOT_FOUND
+)
+
+from django.contrib.auth import login, authenticate, logout
+from .models import Task, User
+from .serializers import TaskListCreateSerializer, UserCreateSerializer, UserSerializer
+
+class UserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
+    permission_classes = [AllowAny]
+    
+    def perform_create(self, serializer):
+        serializer.save()
+        
+class UserLoginView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        
+        if not User.objects.filter(username=username).exists():
+            return Response({"error": "user does not exist"}, status=HTTP_404_NOT_FOUND)
+        
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return Response({"error": "Authentication failed"}, status=HTTP_401_UNAUTHORIZED)
+        
+        login(request, user)
+        return Response(UserSerializer(user).data, status=HTTP_200_OK)
+
+class UserLogoutView(APIView):
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return Response(status=HTTP_204_NO_CONTENT)
+    
+class UserRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 class TaskListCreateView(generics.ListCreateAPIView):
     serializer_class = TaskListCreateSerializer
