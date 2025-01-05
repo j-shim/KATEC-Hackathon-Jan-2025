@@ -13,6 +13,11 @@ ALLOWED_HOSTS = [
     "34.213.4.15",  # Public IP of the EC2 instance
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "http://34.213.4.15",
+]
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
