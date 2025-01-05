@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import TodoBoard from "./components/TodoBoard/TodoBoard";
+import { Row, Col, Container } from "react-bootstrap";
+import api from "./utils/api";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [todoList, setTodoList] = useState([]);
+
+  // const getTasks = async () => {
+  //   const response = await api.get("/tasks");
+  //   console.log("rrrrr", response);
+  //   setTodoList(response.data);
+  // };
+
+  const getTasks = async () => {
+    const response = await api.get("/tasks/");
+    if (Array.isArray(response.data)) {
+      setTodoList(response.data);
+    } else {
+      console.error("Expected an array, received:", response.data);
+    }
+  };
+
+  useEffect(() => {
+    getTasks();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Container className="container-box">
+      <Row>
+        <Col>
+          <div className="date-box">Jan 4th 2024</div>
+        </Col>
+      </Row>
+      <Row className="add-item-row">
+        <Col xs={12} sm={10}>
+          <input type="text" placeholder="Enter tasks" className="input-box" />
+        </Col>
+        <Col xs={12} sm={2}>
+          <button className="button-add">Add</button>
+        </Col>
+      </Row>
+      <TodoBoard todoList={todoList} />
+    </Container>
+  );
+};
 
-export default App
+export default App;
