@@ -13,23 +13,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-*7fyh#(ug@^#4#coh1u4z##eh8($+f4w2i!)^sxv%flk_j*837"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '1.0.0.127.in-addr.arpa',
-]
 
 # Application definition
 
@@ -78,17 +66,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 
 # Password validation
@@ -146,10 +123,3 @@ REST_FRAMEWORK = {
     # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     # "PAGE_SIZE": 10,
 }
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
-CORS_ALLOW_CREDENTIALS = True
