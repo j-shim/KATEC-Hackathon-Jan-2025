@@ -4,7 +4,6 @@ import datetime
 
 class TaskSerializer(serializers.ModelSerializer):
     date = serializers.DateField(default=datetime.date.today)
-    isDone = serializers.BooleanField(default=False)
 
     class Meta:
         model = Task

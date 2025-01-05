@@ -135,7 +135,6 @@ AUTH_USER_MODEL = "app.User"
 # Django REST framework settings.
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication", #뿌꾸기 - 지우기
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
