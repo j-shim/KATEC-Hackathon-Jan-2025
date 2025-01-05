@@ -16,10 +16,7 @@ const App = () => {
 			const csrfToken = document.cookie
 				.split("; ")
 				.find((row) => row.startsWith("csrftoken="));
-			const sessionId = document.cookie
-				.split("; ")
-				.find((row) => row.startsWith("sessionid="));
-			if (csrfToken || sessionId) {
+			if (csrfToken) {
 				setIsLoggedIn(true);
 			} else {
 				setIsLoggedIn(false);
