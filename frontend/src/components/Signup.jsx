@@ -15,7 +15,7 @@ const Signup = () => {
 		setError("");
 
 		try {
-			const response = await fetch("http://localhost:8000/api/users/", {
+			const response = await fetch("/api/users/", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -27,7 +27,7 @@ const Signup = () => {
 				window.location.href = "/";
 			} else {
 				const data = await response.json();
-				setError(data.error || "Signup failed");
+				setError(data.error || "Signup failed.");
 			}
 		} catch (error) {
 			setError("An error occurred. Please try again.");

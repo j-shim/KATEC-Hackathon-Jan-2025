@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import "../css/Login.css";
 
 const Login = ({ onLoginSuccess }) => {
@@ -15,53 +16,26 @@ const Login = ({ onLoginSuccess }) => {
 		return csrfToken ? csrfToken.split("=")[1] : "";
 	};
 
-	useEffect(() => {
-		const fetchCsrfToken = async () => {
-			try {
-				const response = await fetch(
-					"http://localhost:8000/api/csrf-token/",
-					{
-						method: "GET",
-						credentials: "include",
-					}
-				);
-
-				if (response.ok) {
-					console.log("CSRF token set successfully");
-				} else {
-					console.error("Failed to set CSRF token");
-				}
-			} catch (error) {
-				console.error("Error fetching CSRF token:", error);
-			}
-		};
-
-		fetchCsrfToken();
-	}, []);
-
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setError("");
 
 		try {
-			const response = await fetch(
-				"http://localhost:8000/api/users/login/",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"X-CSRFToken": getCsrfToken(),
-					},
-					body: JSON.stringify({ username, password }),
-				}
-			);
+			const response = await fetch("/api/users/login/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"X-CSRFToken": getCsrfToken(),
+				},
+				body: JSON.stringify({ username, password }),
+			});
 
 			if (response.ok) {
 				onLoginSuccess();
 				window.location.reload();
 			} else {
 				const data = await response.json();
-				setError(data.error || "Login failed");
+				setError(data.error || "Login failed.");
 			}
 		} catch (error) {
 			setError("An error occurred. Please try again.");
@@ -104,6 +78,10 @@ const Login = ({ onLoginSuccess }) => {
 			</div>
 		</div>
 	);
+};
+
+Login.propTypes = {
+	onLoginSuccess: PropTypes.func.isRequired,
 };
 
 export default Login;
