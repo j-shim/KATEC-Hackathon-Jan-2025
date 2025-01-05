@@ -1,5 +1,26 @@
 body {
-  background-color: rgb(179, 225, 228);
+  background-color: rgb(255, 255, 255);
+  max-width: 1020px;
+  min-width: 768px;
+  margin: 0 auto;
+}
+
+/* .container-box {
+  border-color: red;
+  border-width: 1px;
+  border-style: solid;
+} */
+.date-box {
+  width: 20rem;
+  height: 2.5rem;
+  border-color: rgb(240, 240, 240);
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .add-item-row {
@@ -7,15 +28,24 @@ body {
 }
 
 .input-box {
-  width: 400px;
-  height: 30px;
+  width: 20rem;
+  height: 2.5rem;
   border-radius: 9999px;
+  border-color: rgb(240, 240, 240);
+  border-width: 3px;
+  border-style: solid;
+  margin-right: 10px;
+  padding-left: 20px;
+}
+
+.input-box::placeholder {
+  font-size: 16px;
 }
 
 .button-add {
-  width: 70px;
-  height: 40px;
+  width: 5rem;
+  height: 3rem;
   border-radius: 9999px;
-  background-color: green;
+  background-color: rgb(224, 93, 136);
   color: white;
 }

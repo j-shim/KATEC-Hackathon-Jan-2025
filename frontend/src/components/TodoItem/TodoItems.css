@@ -1,0 +1,17 @@
+.todo-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-content {
+  font-size: 20px;
+}
+
+.button-delete {
+  width: 5rem;
+  height: 3rem;
+  background-color: rgb(26, 201, 45);
+  color: white;
+  border-radius: 9999px;
+}
