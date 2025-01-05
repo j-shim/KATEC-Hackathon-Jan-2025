@@ -10,18 +10,36 @@ const App = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
-		const token = localStorage.getItem("authToken");
-		if (token) {
-			setIsLoggedIn(true);
-		}
+		const checkAuth = () => {
+			const csrfToken = document.cookie
+				.split("; ")
+				.find((row) => row.startsWith("csrftoken="));
+			const sessionId = document.cookie
+				.split("; ")
+				.find((row) => row.startsWith("sessionid="));
+			if (csrfToken || sessionId) {
+				setIsLoggedIn(true);
+			} else {
+				setIsLoggedIn(false);
+			}
+		};
+
+		checkAuth();
 	}, []);
+
+    const handleLoginSuccess = () => {
+      setIsLoggedIn(true);
+    };
 
 	if (!isLoggedIn) {
 		return (
 			<Router>
 				<Routes>
 					<Route path="/signup" element={<Signup />} />
-					<Route path="/" element={<Login />} />
+					<Route
+						path="/"
+						element={<Login onLoginSuccess={handleLoginSuccess} />}
+					/>
 				</Routes>
 			</Router>
 		);

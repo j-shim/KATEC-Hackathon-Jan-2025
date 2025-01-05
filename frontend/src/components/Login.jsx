@@ -1,11 +1,42 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/Login.css";
 
-const Login = () => {
+const Login = ({ onLoginSuccess }) => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+
+	const getCsrfToken = () => {
+		const csrfToken = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("csrftoken="));
+		return csrfToken ? csrfToken.split("=")[1] : "";
+	};
+
+	useEffect(() => {
+		const fetchCsrfToken = async () => {
+			try {
+				const response = await fetch(
+					"http://localhost:8000/api/csrf-token/",
+					{
+						method: "GET",
+						credentials: "include",
+					}
+				);
+
+				if (response.ok) {
+					console.log("CSRF token set successfully");
+				} else {
+					console.error("Failed to set CSRF token");
+				}
+			} catch (error) {
+				console.error("Error fetching CSRF token:", error);
+			}
+		};
+
+		fetchCsrfToken();
+	}, []);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -18,14 +49,14 @@ const Login = () => {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
+						"X-CSRFToken": getCsrfToken(),
 					},
 					body: JSON.stringify({ username, password }),
 				}
 			);
 
 			if (response.ok) {
-				const data = await response.json();
-				localStorage.setItem("authToken", data.token);
+				onLoginSuccess();
 				window.location.reload();
 			} else {
 				const data = await response.json();
@@ -62,7 +93,9 @@ const Login = () => {
 						/>
 					</div>
 					{error && <p className="error">{error}</p>}
-					<button id="signin-button" type="submit">SIGN IN</button>
+					<button id="signin-button" type="submit">
+						SIGN IN
+					</button>
 				</form>
 				<p>
 					Don&apos;t have an account? <a href="/signup">Sign up</a>

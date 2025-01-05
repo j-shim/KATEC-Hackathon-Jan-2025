@@ -12,6 +12,9 @@ from rest_framework.status import (
 from django.contrib.auth import login, authenticate, logout
 from .models import Task, User
 from .serializers import TaskListCreateSerializer, UserCreateSerializer, UserSerializer
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
 
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -21,6 +24,13 @@ class UserCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save()
         
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class CSRFTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({'message': 'CSRF token set'})
+    
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
     
