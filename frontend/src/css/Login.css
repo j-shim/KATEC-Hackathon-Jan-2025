@@ -1,0 +1,120 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+.login-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgb(235, 226, 254);
+}
+
+.login-container {
+	width: 90%;
+	height: 100%;
+	max-width: 400px;
+    max-height: 400px;
+	background-color: white;
+	border-radius: 40px;
+	padding: 15px;
+	box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+	z-index: 4;
+	backdrop-filter: blur(1px);
+	box-sizing: border-box;
+	display: grid;
+	place-items: center;
+}
+
+.field-group {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.field-group label {
+	text-align: left;
+	font-weight: 500;
+	margin-right: 5px;
+}
+
+.field-group input {
+	height: 30px;
+	border-radius: 10px;
+	padding: 0 10px;
+	margin: 5px 0px;
+	border: 1px solid #ccc;
+	box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#signin-button {
+	width: 100%;
+	height: 40px;
+	border-radius: 99px;
+	background-color: rgb(118, 61, 252);
+	box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	color: white;
+	align-items: center;
+}
+
+#signup-button {
+	width: 100%;
+	height: 40px;
+	border-radius: 99px;
+	background-color: rgb(238, 68, 125);
+	box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.2);
+	margin-top: 12px;
+	color: white;
+	align-items: center;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+	.login-container {
+		width: 90%;
+		height: 100%;
+        max-height: 400px;
+		padding: 20px;
+	}
+
+	.field-group {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.field-group label,
+	.field-group input {
+		width: 100%;
+		margin: 5px 0;
+	}
+
+	#signin-button,
+	#signup-button {
+		height: 50px;
+	}
+}
+
+@media (max-width: 480px) {
+	.login-container {
+		width: 90%;
+		height: 100%;
+        max-height: 600px;
+		padding: 25px;
+	}
+
+	.field-group label,
+	.field-group input {
+		width: 100%;
+		margin: 10px 0;
+	}
+
+	#signin-button,
+	#signup-button {
+		height: 55px;
+	}
+}
