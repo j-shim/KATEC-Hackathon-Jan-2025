@@ -1,7 +1,5 @@
 from rest_framework import serializers
-
 from .models import Task
-
 
 class TaskListCreateSerializer(serializers.ModelSerializer):
     class Meta:
