@@ -11,7 +11,10 @@
 .button-delete {
   width: 5rem;
   height: 3rem;
-  background-color: rgb(26, 201, 45);
+  background-color: rgb(255, 111, 125);
   color: white;
   border-radius: 9999px;
+  padding: 5px;
+  margin-right: 15px;
+  margin-bottom: 15px;
 }

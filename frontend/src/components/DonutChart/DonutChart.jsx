@@ -6,33 +6,64 @@ import "./DonutChart.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const DonutChart = () => {
-  const [chartData, setChartData] = useState({
-    labels: ["🧹", "🍳", "🧼", "Mow the lawn", "♻️"],
-    datasets: [
-      {
-        label: "Breakdown",
-        data: [55, 32.7, 12.3, 10, 20],
-        backgroundColor: ["#FFD166", "#6A4C93", "#EF476F"],
-        hoverBackgroundColor: ["#FFB100", "#522D6C", "#D43E5B"],
-      },
-    ],
-  });
+const DONE_COLORS = [
+  "rgb(119,25,246)",
+  "rgb(240,175,64)",
+  "rgb(233,78,82)",
+  "rgb(233,78,246)",
+  "rgb(247,215,216)",
+  "rgb(250,238,216)",
+  "rgb(225,94,136)",
+];
+
+const DonutChart = ({ doneTasks }) => {
+  const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData((prev) => ({
-        ...prev,
+    if (!doneTasks) {
+      doneTasks = [];
+    }
+
+    if (doneTasks.length === 0) {
+      setChartData({
+        labels: ["No tasks done"],
         datasets: [
           {
-            ...prev.datasets[0],
-            data: prev.datasets[0].data.map(() => Math.random() * 100),
+            label: "Empty",
+            data: [1],
+            backgroundColor: ["#e0e0e0"],
+            hoverBackgroundColor: ["#c0c0c0"],
           },
         ],
-      }));
-    }, 30000);
-    return () => clearInterval(interval);
-  }, []);
+      });
+      return;
+    }
+
+    const labels = doneTasks.map((task) => task.name);
+    const data = doneTasks.map(() => 1);
+    const backgroundColor = doneTasks.map(
+      (_, idx) => DONE_COLORS[idx % DONE_COLORS.length]
+    );
+    const hoverBackgroundColor = doneTasks.map(
+      (_, idx) => DONE_COLORS[idx % DONE_COLORS.length]
+    );
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: "Done Tasks",
+          data,
+          backgroundColor,
+          hoverBackgroundColor,
+        },
+      ],
+    });
+  }, [doneTasks]);
+
+  if (!chartData) {
+    return <div>Loading chart...</div>;
+  }
 
   return (
     <div className="donut-chart-container">
@@ -41,25 +72,21 @@ const DonutChart = () => {
         options={{
           plugins: {
             datalabels: {
-              color: "#000", // 텍스트 색상
+              color: "#000",
               font: {
-                size: 80, // 텍스트 크기
+                size: 50, // 아이콘 크기
                 weight: "bold",
               },
               formatter: (value, context) => {
                 const label = context.chart.data.labels[context.dataIndex];
-                const percentage = (
-                  (value / context.dataset.data.reduce((a, b) => a + b)) *
-                  100
-                ).toFixed(1);
-                return `${label}`; // 예: "Shopping: 51%"
+                return label;
               },
-              anchor: "end", // 텍스트 위치 조정
-              align: "end", // 텍스트 정렬
-              offset: 10, // 도넛 바깥쪽으로 얼마나 떨어질지
+              anchor: "end",
+              align: "end",
+              offset: 15, // 도넛 바깥쪽으로 얼마나 떨어질지
             },
             legend: {
-              display: false, // 기본 범례 제거 (필요 시 유지)
+              display: false,
             },
           },
           layout: {
@@ -71,7 +98,7 @@ const DonutChart = () => {
             }, // 차트 내부 여백 추가
           },
           maintainAspectRatio: false,
-          cutout: "70%", // 도넛 두께 조정
+          cutout: "70%", // 도넛 차트 가운데 두께
         }}
       />
     </div>

@@ -1,10 +1,18 @@
 import axios from "axios";
 
+const getCsrfToken = () => {
+  const csrfToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrftoken="));
+  return csrfToken ? csrfToken.split("=")[1] : "";
+};
+
 const api = axios.create({
   // baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
+    "X-CSRFToken": getCsrfToken(),
   },
   withCredentials: true,
 });
