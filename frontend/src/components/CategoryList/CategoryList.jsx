@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -8,48 +8,76 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import './CategoryList.css';
+import api from '../../utils/api';
 
-// chart.js setting
+// chart.js 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const CategoryList = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [categoryData, setCategoryData] = useState(null);
 
-  // category list
+  
   const categories = [
-    { name: 'Exercise', icon: '🏋️‍♀️' },
-    { name: 'Shopping', icon: '🛍️' },
-    { name: 'Food', icon: '🍔' }
+    { name: 'productive', icon: '💼' },
+    { name: 'essential', icon: '🛍️' },
+    { name: 'leisure', icon: '🌴' },
   ];
 
-  // mock data
-  const categoryData = {
-    Exercise: [5, 10, 3, 7, 4, 6, 9, 2, 8, 10, 5, 3], 
-    Shopping: [2, 3, 5, 1, 2, 7, 4, 6, 3, 5, 8, 2], 
-    Food: [12, 15, 13, 14, 16, 13, 17, 19, 20, 18, 17, 16] 
-  };
-
   const handleCategoryClick = (categoryName) => {
-    setSelectedCategory((prevCategory) =>
-      prevCategory === categoryName ? null : categoryName
-    );
+    setSelectedCategory((prevCategory) => (prevCategory === categoryName ? null : categoryName));
   };
 
-  const chartData = selectedCategory ? {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // 월별 레이블
+  const chartData = selectedCategory && categoryData ? {
+    labels: categoryData.dates, 
     datasets: [
       {
-        label: selectedCategory, // category name
-        data: categoryData[selectedCategory], // data of the selected category
-        borderColor: '#F25288', // graph color
-        backgroundColor: '#F25288', // graph background color
-        fill: true 
-      }
-    ]
+        label: `${selectedCategory} - Completed`,
+        data: categoryData.completedCounts, // completed
+        borderColor: '#28a745',
+        backgroundColor: 'rgb(60, 193, 25)',
+        fill: true,
+      },
+      {
+        label: `${selectedCategory} - Pending`,
+        data: categoryData.pendingCounts, // pending
+        borderColor: '#dc3545',
+        backgroundColor: '#EF476F',
+        fill: true,
+      },
+    ],
   } : null;
+
+  useEffect(() => {
+    const getCategoryData = async () => {
+      if (!selectedCategory) return;
+
+      try {
+        const response = await api.get('/tasks', {
+          params: { category: selectedCategory },
+        });
+
+        const tasks = response.data;
+
+        const dates = Array.from(new Set(tasks.map((task) => task.date))); 
+        const completedCounts = dates.map(date => tasks.filter((task) => task.date === date && task.isDone).length);
+        const pendingCounts = dates.map(date => tasks.filter((task) => task.date === date && !task.isDone).length);
+
+        setCategoryData({
+          dates, 
+          completedCounts, 
+          pendingCounts, 
+        });
+      } catch (error) {
+        console.error('Error fetching category data:', error);
+      }
+    };
+
+    getCategoryData();
+  }, [selectedCategory]);
 
   return (
     <div className="category-container">
@@ -66,7 +94,7 @@ const CategoryList = () => {
           <div
             key={index}
             className="category-item"
-            onClick={() => handleCategoryClick(category.name)} // changed category
+            onClick={() => handleCategoryClick(category.name)} 
           >
             <span className="category-icon">{category.icon}</span>
             <span className="category-name">{category.name}</span>
@@ -74,10 +102,9 @@ const CategoryList = () => {
         ))}
       </div>
 
-      {/* the graph is displayed according to the selected category */}
       {selectedCategory && chartData && (
         <div className="chart-container">
-          <h3>{selectedCategory} Monthly Activity</h3>
+          <h3>{selectedCategory} Activity</h3>
           <Line data={chartData} />
         </div>
       )}
