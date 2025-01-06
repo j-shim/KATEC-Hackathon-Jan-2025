@@ -9,7 +9,6 @@ import api from "./utils/api";
 import DonutChart from "./components/DonutChart/DonutChart";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState("");
   const navigate = useNavigate();
@@ -128,20 +127,6 @@ const App = () => {
   useEffect(() => {
     getTasks();
   }, []);
-
-	if (!isLoggedIn) {
-			return (
-					<Router>
-							<Routes>
-									<Route path="/signup" element={<Signup />} />
-									<Route
-											path="/"
-											element={<Login onLoginSuccess={handleLoginSuccess} />}
-									/>
-							</Routes>
-					</Router>
-			);
-	}
 
   return (
     <Container className="container-box">
