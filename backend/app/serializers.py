@@ -25,3 +25,11 @@ class TaskListCreateSerializer(serializers.ModelSerializer):
         model = Task
         fields = ["id", "name", "category", "user", "isDone", "date"]
         read_only_fields = ["user"]
+
+    def validate(self, data):
+        name = data.get('name')
+        date = data.get('date')
+        
+        if Task.objects.filter(name=name, date=date).exists():
+            raise serializers.ValidationError({"name_date": "Task with this name and date already exists."})
+        return data
