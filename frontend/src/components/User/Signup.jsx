@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
-import "../css/Login.css";
+import "../../css/Login.css";
 
 const Signup = () => {
 	const [username, setUsername] = useState("");

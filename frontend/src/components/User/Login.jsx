@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import PropTypes from "prop-types";
-import "../css/Login.css";
+import "../../css/Login.css";
 
 const Login = ({ onLoginSuccess }) => {
 	const [username, setUsername] = useState("");
