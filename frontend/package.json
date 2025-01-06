@@ -10,6 +10,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+    "bootstrap": "^5.3.3",
+    "react-datepicker": "^7.5.0",
 		"axios": "^1.7.9",
 		"bootstrap": "^5.3.3",
     "chart.js": "^4.4.7",
@@ -33,4 +35,5 @@
 		"globals": "^15.14.0",
 		"vite": "^6.0.5"
 	}
+
 }

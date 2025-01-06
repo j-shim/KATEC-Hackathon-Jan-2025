@@ -1,10 +1,7 @@
+import DatePickerHeader from "./components/DatePickerHeader/DatePickerHeader.jsx";
+import CategoryList from "./components/CategoryList/CategoryList.jsx";
 import { useState, useEffect } from "react";
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes,
-    Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import "./App.css";
 import TodoBoard from "./components/TodoBoard/TodoBoard";
 import { Row, Col, Container } from "react-bootstrap";
@@ -124,8 +121,10 @@ const App = () => {
 			<Container className="container-box">
 				<Row className="top-right-corner">
 					<Col xs="auto">
-						<Link to="/edituser" id="edit-button">EDIT INFO</Link>
-							{/* id="edit-button",
+						<Link to="/edituser" id="edit-button">
+							EDIT INFO
+						</Link>
+						{/* id="edit-button",
 						>
 							EDIT INFO
 						</button> */}
@@ -136,7 +135,7 @@ const App = () => {
 				</Row>
 				<Row>
 					<Col>
-						<div className="date-box">Jan 4th 2024</div>
+						<DatePickerHeader />
 					</Col>
 				</Row>
 				<Row className="add-item-row">
@@ -160,6 +159,7 @@ const App = () => {
 				<TodoBoard todoList={todoList} />
 				<DonutChart />
 			</Container>
+			<CategoryList />
 			<Routes>
 				<Route path="/edituser" element={<EditUserInfo />} />
 			</Routes>

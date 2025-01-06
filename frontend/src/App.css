@@ -1,15 +1,11 @@
 body {
-	background-color: rgb(255, 255, 255);
-	max-width: 1020px;
-	min-width: 768px;
-	margin: 0 auto;
+  width: 100%;
+  padding: 0;
+  background-color: rgb(255, 255, 255);
+  max-width: 1020px;
+  min-width: 768px;
+  margin: 0 auto;
 }
-
-/* .container-box {
-  border-color: red;
-  border-width: 1px;
-  border-style: solid;
-} */
 
 .date-box {
 	width: 20rem;
