@@ -1,10 +1,10 @@
+import DatePickerHeader from "./components/DatePickerHeader/DatePickerHeader.jsx";
+import CategoryList from "./components/CategoryList/CategoryList.jsx";
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import TodoBoard from "./components/TodoBoard/TodoBoard";
 import { Row, Col, Container } from "react-bootstrap";
-import Login from "./components/User/Login";
-import Signup from "./components/User/Signup";
 import api from "./utils/api";
 import DonutChart from "./components/DonutChart/DonutChart";
 
@@ -12,25 +12,60 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState("");
+  const navigate = useNavigate();
 
   const doneTasks = todoList.filter((task) => task.isDone);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const csrfToken = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("csrftoken="));
-      if (csrfToken) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/users/current/", {
+          method: "GET",
+          credentials: "include",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.username) {
+            navigate("/");
+          } else {
+            navigate("/login");
+          }
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        navigate("/login");
       }
     };
     checkAuth();
   }, []);
 
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
+  const getCsrfToken = () => {
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrftoken="));
+    return csrfToken ? csrfToken.split("=")[1] : "";
+  };
+
+  const handleLogout = () => {
+    fetch("/api/users/logout/", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          navigate("/login");
+        } else {
+          throw new Error("Logout failed.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error logging out:", error);
+      });
   };
 
   const getTasks = async () => {
@@ -94,27 +129,30 @@ const App = () => {
     getTasks();
   }, []);
 
-  if (!isLoggedIn) {
-    return (
-      <Router>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-        </Routes>
-      </Router>
-    );
-  }
-
   return (
     <Container className="container-box">
-      {/* 1. Date Box */}
+      <Row className="top-right-corner">
+        <Col xs="auto">
+          <Link to="/edituser" id="edit-button">
+            EDIT INFO
+          </Link>
+          <button id="signout-button" onClick={handleLogout}>
+            SIGN OUT
+          </button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <DatePickerHeader />
+        </Col>
+      </Row>
+
       <Row className="justify-content-center">
         <Col md={6}>
           <div className="date-box">Jan 4th 2024</div>
         </Col>
       </Row>
 
-      {/* 2. Add Task Input + Button */}
       <Row className="justify-content-center add-item-row">
         <Col xs={12} sm={8} md={6}>
           <input
@@ -131,8 +169,6 @@ const App = () => {
           </button>
         </Col>
       </Row>
-
-      {/* 3. Todo Board */}
       <Row className="justify-content-center">
         <Col md={8}>
           <TodoBoard
@@ -142,13 +178,12 @@ const App = () => {
           />
         </Col>
       </Row>
-
-      {/* 4. Donut Chart */}
       <Row className="justify-content-center">
         <Col md={8}>
           <DonutChart doneTasks={doneTasks} />
         </Col>
       </Row>
+      <CategoryList />
     </Container>
   );
 };

@@ -1,51 +1,86 @@
 body {
-  background-color: rgb(255, 255, 255);
-  max-width: 1020px;
-  min-width: 768px;
-  margin: 0 auto;
+	width: 100%;
+	padding: 0;
+	background-color: rgb(255, 255, 255);
+	max-width: 1020px;
+	min-width: 768px;
+	margin: 0 auto;
 }
 
-/* .container-box {
-  border-color: red;
-  border-width: 1px;
-  border-style: solid;
-} */
 .date-box {
-  width: 20rem;
-  height: 2.5rem;
-  border-color: rgb(240, 240, 240);
-  border-width: 3px;
-  border-style: solid;
-  border-radius: 9999px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
+	width: 20rem;
+	height: 2.5rem;
+	border-color: rgb(240, 240, 240);
+	border-width: 3px;
+	border-style: solid;
+	border-radius: 9999px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30px;
 }
 
 .add-item-row {
-  display: flex;
+	display: flex;
 }
 
 .input-box {
-  width: 20rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  border-color: rgb(240, 240, 240);
-  border-width: 3px;
-  border-style: solid;
-  margin-right: 10px;
-  padding-left: 20px;
+	width: 20rem;
+	height: 2.5rem;
+	border-radius: 9999px;
+	border-color: rgb(240, 240, 240);
+	border-width: 3px;
+	border-style: solid;
+	margin-right: 10px;
+	padding-left: 20px;
 }
 
 .input-box::placeholder {
-  font-size: 16px;
+	font-size: 16px;
 }
 
 .button-add {
-  width: 5rem;
-  height: 3rem;
-  border-radius: 9999px;
-  background-color: rgb(224, 93, 136);
-  color: white;
+	width: 5rem;
+	height: 3rem;
+	border-radius: 9999px;
+	background-color: rgb(224, 93, 136);
+	color: white;
+}
+
+.top-right-corner {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+#edit-button,
+#signout-button {
+	display: inline-block;
+	width: 120px;
+	height: 38px;
+	border-radius: 99px;
+	box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.2);
+	color: white;
+	align-items: center;
+	text-align: center;
+	text-decoration: none;
+}
+
+#edit-button {
+	background-color: rgb(60, 193, 25);
+	margin-right: 6px;
+	line-height: 39px;
+}
+#edit-button:hover {
+	background-color: rgb(40, 110, 15);
+	font-weight: bold;
+}
+
+#signout-button {
+	background-color: rgb(255, 111, 125);
+	margin-left: 6px;
+}
+#signout-button:hover {
+	background-color: rgb(220, 50, 90);
+	font-weight: bold;
 }

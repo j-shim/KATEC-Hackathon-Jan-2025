@@ -1,0 +1,42 @@
+.date-visible {
+  cursor: pointer;
+  color: #fff;
+  background-color: #F25288;
+  display: inline-block; 
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+  user-select: none;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto; 
+}
+
+.date-picker-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.custom-calendar {
+
+}
+
+.btn-save {
+  border: 3px solid red;
+  /* display: block;
+  margin-top: 10px;
+  background-color: #F25288;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #fff;
+  transition: background-color 0.3s;
+  width: 100%; */
+}
