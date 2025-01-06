@@ -129,6 +129,20 @@ const App = () => {
     getTasks();
   }, []);
 
+	if (!isLoggedIn) {
+			return (
+					<Router>
+							<Routes>
+									<Route path="/signup" element={<Signup />} />
+									<Route
+											path="/"
+											element={<Login onLoginSuccess={handleLoginSuccess} />}
+									/>
+							</Routes>
+					</Router>
+			);
+	}
+
   return (
     <Container className="container-box">
       <Row className="top-right-corner">
