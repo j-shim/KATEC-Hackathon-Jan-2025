@@ -9,9 +9,9 @@ import api from "./utils/api";
 import DonutChart from "./components/DonutChart/DonutChart";
 
 const App = () => {
-	const [todoList, setTodoList] = useState([]);
-	const [todoValue, setTodoValue] = useState("");
-	const navigate = useNavigate();
+  const [todoList, setTodoList] = useState([]);
+  const [todoValue, setTodoValue] = useState("");
+  const navigate = useNavigate();
 
 	const doneTasks = todoList.filter((task) => task.isDone);
 
@@ -128,30 +128,24 @@ const App = () => {
 		getTasks();
 	}, []);
 
-	return (
-		<Container className="container-box">
-			<Row className="top-right-corner">
-				<Col xs="auto">
-					<Link to="/edituser" id="edit-button">
-						EDIT INFO
-					</Link>
-					<button id="signout-button" onClick={handleLogout}>
-						SIGN OUT
-					</button>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<DatePickerHeader />
-				</Col>
-			</Row>
 
-			<Row className="justify-content-center">
-				<Col md={6}>
-					<div className="date-box">Jan 4th 2024</div>
-				</Col>
-			</Row>
-
+  return (
+    <Container className="container-box">
+      <Row className="top-right-corner">
+        <Col xs="auto">
+          <Link to="/edituser" id="edit-button">
+            EDIT INFO
+          </Link>
+          <button id="signout-button" onClick={handleLogout}>
+            SIGN OUT
+          </button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <DatePickerHeader />
+        </Col>
+      </Row>
 			<Row className="justify-content-center add-item-row">
 				<Col xs={12} sm={8} md={6}>
 					<input

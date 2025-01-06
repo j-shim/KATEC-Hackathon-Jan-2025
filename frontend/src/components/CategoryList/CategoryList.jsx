@@ -20,7 +20,6 @@ const CategoryList = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categoryData, setCategoryData] = useState(null);
 
-  
   const categories = [
     { name: 'productive', icon: '💼' },
     { name: 'essential', icon: '🛍️' },
@@ -49,6 +48,24 @@ const CategoryList = () => {
         fill: true,
       },
     ],
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            // Convert numeric ticks to "Completed" and "Pending"
+            callback: function (value, index, values) {
+              if (value === 0) {
+                return "Pending";
+              } else if (value === 1) {
+                return "Completed";
+              }
+              return '';  // Empty for other ticks
+            }
+          }
+        }
+      }
+    }
   } : null;
 
   useEffect(() => {
@@ -59,7 +76,7 @@ const CategoryList = () => {
         const response = await api.get('/tasks', {
           params: { category: selectedCategory },
         });
-
+        console.log(response.data);
         const tasks = response.data;
 
         const dates = Array.from(new Set(tasks.map((task) => task.date))); 
@@ -105,7 +122,7 @@ const CategoryList = () => {
       {selectedCategory && chartData && (
         <div className="chart-container">
           <h3>{selectedCategory} Activity</h3>
-          <Line data={chartData} />
+          <Line data={chartData} options={chartData.options} />
         </div>
       )}
     </div>
