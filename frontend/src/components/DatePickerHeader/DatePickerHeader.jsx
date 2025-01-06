@@ -33,22 +33,7 @@ const DatePickerComponent = () => {
     console.log("End Date:", formattedEndDate); 
 
     
-    // try {
-    //   const response = await fetch("https://your-api-endpoint.com/submit", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       startDate: formattedStartDate,
-    //       endDate: formattedEndDate,
-    //     }),
-    //   });
-    //   const data = await response.json();
-    //   console.log("API Response:", data);
-    // } catch (error) {
-    //   console.error("API 호출 중 오류 발생:", error);
-    // }
+    // api
   };
   
 
