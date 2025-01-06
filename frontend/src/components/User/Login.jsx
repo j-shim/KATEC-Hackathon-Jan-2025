@@ -1,13 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
-import PropTypes from "prop-types";
 import "../../css/Login.css";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ onLoginSuccess }) => {
+const Login = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const getCsrfToken = () => {
 		const csrfToken = document.cookie
@@ -20,25 +19,20 @@ const Login = ({ onLoginSuccess }) => {
 		e.preventDefault();
 		setError("");
 
-		try {
-			const response = await fetch("/api/users/login/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"X-CSRFToken": getCsrfToken(),
-				},
-				body: JSON.stringify({ username, password }),
-			});
+		const response = await fetch("/api/users/login/", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": getCsrfToken(),
+			},
+			body: JSON.stringify({ username, password }),
+		});
 
-			if (response.ok) {
-				onLoginSuccess();
-				window.location.reload();
-			} else {
-				const data = await response.json();
-				setError(data.error || "Login failed.");
-			}
-		} catch (error) {
-			setError("An error occurred. Please try again.");
+		if (response.ok) {
+			navigate("/");
+		} else {
+			const data = await response.json();
+			setError(data.error || "Login failed.");
 		}
 	};
 
@@ -78,10 +72,6 @@ const Login = ({ onLoginSuccess }) => {
 			</div>
 		</div>
 	);
-};
-
-Login.propTypes = {
-	onLoginSuccess: PropTypes.func.isRequired,
 };
 
 export default Login;

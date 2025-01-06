@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import "../../css/Login.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	// const [email, setEmail] = useState("");
-	// const [firstName, setFirstName] = useState("");
-	// const [lastName, setLastName] = useState("");
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const handleSignup = async (e) => {
 		e.preventDefault();
@@ -24,7 +23,7 @@ const Signup = () => {
 			});
 
 			if (response.ok) {
-				window.location.href = "/";
+				navigate("/");
 			} else {
 				const data = await response.json();
 				setError(data.error || "Signup failed.");
@@ -59,43 +58,13 @@ const Signup = () => {
 							required
 						/>
 					</div>
-					{/* <div className="field-group">
-						<label htmlFor="email">Email</label>
-						<input
-							type="email"
-							id="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-						/>
-					</div>
-					<div className="field-group">
-						<label htmlFor="first_name">First Name</label>
-						<input
-							type="text"
-							id="first_name"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
-							required
-						/>
-					</div>
-					<div className="field-group">
-						<label htmlFor="last_name">Last Name</label>
-						<input
-							type="text"
-							id="last_name"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
-                            required
-						/>
-					</div> */}
 					{error && <p className="error">{error}</p>}
 					<button id="signup-button" type="submit">
 						SIGN UP
 					</button>
 				</form>
 				<p>
-					Already have an account? <a href="/">Sign in</a>
+					Already have an account? <a href="/login">Sign in</a>
 				</p>
 			</div>
 		</div>

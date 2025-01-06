@@ -1,20 +1,17 @@
 import DatePickerHeader from "./components/DatePickerHeader/DatePickerHeader.jsx";
 import CategoryList from "./components/CategoryList/CategoryList.jsx";
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
 import TodoBoard from "./components/TodoBoard/TodoBoard";
 import { Row, Col, Container } from "react-bootstrap";
-import Login from "./components/User/Login";
-import Signup from "./components/User/Signup";
-import EditUserInfo from "./components/User/EditUserInfo";
 import api from "./utils/api";
 import DonutChart from "./components/DonutChart/DonutChart";
 
 const App = () => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [todoList, setTodoList] = useState([]);
 	const [todoValue, setTodoValue] = useState("");
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -27,24 +24,20 @@ const App = () => {
 				if (response.ok) {
 					const data = await response.json();
 					if (data.username) {
-						setIsLoggedIn(true);
+						navigate("/");
 					} else {
-						setIsLoggedIn(false);
+						navigate("/login");
 					}
 				} else {
-					setIsLoggedIn(false);
+					navigate("/login");
 				}
 			} catch (error) {
 				console.error("Error checking authentication:", error);
-				setIsLoggedIn(false);
+				navigate("/login");
 			}
 		};
 		checkAuth();
 	}, []);
-
-	const handleLoginSuccess = () => {
-		setIsLoggedIn(true);
-	};
 
 	const getCsrfToken = () => {
 		const csrfToken = document.cookie
@@ -63,7 +56,7 @@ const App = () => {
 		})
 			.then((response) => {
 				if (response.ok) {
-					setIsLoggedIn(false);
+					navigate("/login");
 				} else {
 					throw new Error("Logout failed.");
 				}
@@ -102,68 +95,43 @@ const App = () => {
 		getTasks();
 	}, []);
 
-	if (!isLoggedIn) {
-		return (
-			<Router>
-				<Routes>
-					<Route path="/signup" element={<Signup />} />
-					<Route
-						path="/"
-						element={<Login onLoginSuccess={handleLoginSuccess} />}
-					/>
-				</Routes>
-			</Router>
-		);
-	}
-
 	return (
-		<Router>
-			<Container className="container-box">
-				<Row className="top-right-corner">
-					<Col xs="auto">
-						<Link to="/edituser" id="edit-button">
-							EDIT INFO
-						</Link>
-						{/* id="edit-button",
-						>
-							EDIT INFO
-						</button> */}
-						<button id="signout-button" onClick={handleLogout}>
-							SIGN OUT
-						</button>
-					</Col>
-				</Row>
-				<Row>
-					<Col>
-						<DatePickerHeader />
-					</Col>
-				</Row>
-				<Row className="add-item-row">
-					<Col xs={12} sm={10}>
-						<input
-							type="text"
-							placeholder="Enter tasks"
-							className="input-box"
-							value={todoValue}
-							onChange={(event) =>
-								setTodoValue(event.target.value)
-							}
-						/>
-					</Col>
-					<Col xs={12} sm={2}>
-						<button className="button-add" onClick={addTask}>
-							Add
-						</button>
-					</Col>
-				</Row>
-				<TodoBoard todoList={todoList} />
-				<DonutChart />
-			</Container>
+		<Container className="container-box">
+			<Row className="top-right-corner">
+				<Col xs="auto">
+					<Link to="/edituser" id="edit-button">
+						EDIT INFO
+					</Link>
+					<button id="signout-button" onClick={handleLogout}>
+						SIGN OUT
+					</button>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<DatePickerHeader />
+				</Col>
+			</Row>
+			<Row className="add-item-row">
+				<Col xs={12} sm={10}>
+					<input
+						type="text"
+						placeholder="Enter tasks"
+						className="input-box"
+						value={todoValue}
+						onChange={(event) => setTodoValue(event.target.value)}
+					/>
+				</Col>
+				<Col xs={12} sm={2}>
+					<button className="button-add" onClick={addTask}>
+						Add
+					</button>
+				</Col>
+			</Row>
+			<TodoBoard todoList={todoList} />
+			<DonutChart />
 			<CategoryList />
-			<Routes>
-				<Route path="/edituser" element={<EditUserInfo />} />
-			</Routes>
-		</Router>
+		</Container>
 	);
 };
 
