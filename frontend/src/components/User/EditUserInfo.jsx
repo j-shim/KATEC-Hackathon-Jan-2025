@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../css/Login.css";
+import { useNavigate } from "react-router-dom";
 
 const EditUserInfo = () => {
 	const [username, setUsername] = useState("");
@@ -8,6 +9,43 @@ const EditUserInfo = () => {
 	const [last_name, setLastName] = useState("");
 	const [email, setEmail] = useState("");
 	const [error, setError] = useState("");
+	const navigate = useNavigate();
+
+	const getCsrfToken = () => {
+		const csrfToken = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("csrftoken="));
+		return csrfToken ? csrfToken.split("=")[1] : "";
+	};
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const response = await fetch("/api/users/current/", {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getCsrfToken(),
+					},
+					credentials: "include",
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					setUsername(data.username);
+					setFirstName(data.first_name);
+					setLastName(data.last_name);
+					setEmail(data.email);
+				} else {
+					console.error("Failed to fetch user data.");
+				}
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+			}
+		};
+
+		fetchUserData();
+	}, []);
 
 	const handleEdit = async (e) => {
 		e.preventDefault();
@@ -18,6 +56,7 @@ const EditUserInfo = () => {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					"X-CSRFToken": getCsrfToken(),
 				},
 				body: JSON.stringify({
 					username,
@@ -28,7 +67,8 @@ const EditUserInfo = () => {
 			});
 
 			if (response.ok) {
-				window.location.href = "/";
+				alert("Edit successful!");
+				navigate("/");
 			} else {
 				const data = await response.json();
 				setError(data.error || "Edit failed.");
@@ -39,9 +79,9 @@ const EditUserInfo = () => {
 	};
 
 	return (
-		<div className="login-wrapper">
-			<div className="login-container">
-				<h2>Create an Account</h2>
+		<div className="edit-wrapper">
+			<div className="edit-container">
+				<h2>Any updates?</h2>
 				<form onSubmit={handleEdit}>
 					<div className="field-group">
 						<label htmlFor="username">Username</label>
@@ -50,7 +90,7 @@ const EditUserInfo = () => {
 							id="username"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
-							required
+							disabled
 						/>
 					</div>
 					<div className="field-group">
@@ -84,7 +124,7 @@ const EditUserInfo = () => {
 						/>
 					</div>
 					{error && <p className="error">{error}</p>}
-					<button id="edit-button" type="submit">
+					<button id="edit-info-button" type="submit">
 						EDIT
 					</button>
 				</form>

@@ -9,6 +9,13 @@ const Signup = () => {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
+	const getCsrfToken = () => {
+		const csrfToken = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("csrftoken="));
+		return csrfToken ? csrfToken.split("=")[1] : "";
+	};
+
 	const handleSignup = async (e) => {
 		e.preventDefault();
 		setError("");
@@ -18,6 +25,7 @@ const Signup = () => {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+                    "X-CSRFToken": getCsrfToken(),
 				},
 				body: JSON.stringify({ username, password }),
 			});
@@ -34,7 +42,7 @@ const Signup = () => {
 	};
 
 	return (
-		<div className="login-wrapper">
+		<div className="signup-wrapper">
 			<div className="login-container">
 				<h2>Create an Account</h2>
 				<form onSubmit={handleSignup}>
