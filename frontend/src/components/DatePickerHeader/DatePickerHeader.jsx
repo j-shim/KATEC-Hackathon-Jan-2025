@@ -54,14 +54,19 @@ const DatePickerComponent = () => {
       // callApi(selectedDates);
 
       getApi(selectedDates);
+      setPickerVisible(false);
       console.log(selectedDates[0], selectedDates[1])
     }
   }, [selectedDates]);
 
+  const handleOnClick = () => {
+    setPickerVisible(!isPickerVisible);
+  }
+
   return (
     <div>
       <p
-        onClick={() => setPickerVisible(true)}
+        onClick={() => handleOnClick()}
         className="date-visible"
         style={{
           cursor: 'pointer',

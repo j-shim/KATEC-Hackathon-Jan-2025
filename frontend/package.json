@@ -13,7 +13,6 @@
     "bootstrap": "^5.3.3",
     "react-datepicker": "^7.5.0",
 		"axios": "^1.7.9",
-		"bootstrap": "^5.3.3",
     "chart.js": "^4.4.7",
     "chartjs-plugin-datalabels": "^2.2.0",
 		"prop-types": "^15.8.1",

@@ -19,6 +19,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (request) => {
+    request.headers["X-CSRFToken"] = getCsrfToken();
     console.log("Starting Request", request);
     return request;
   },
