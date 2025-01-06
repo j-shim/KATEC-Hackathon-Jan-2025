@@ -1,0 +1,9 @@
+.donut-chart-container {
+  width: 1000px;
+  margin: 0 auto;
+  height: 800px;
+  max-width: 1020px;
+  border-color: red;
+  border-width: 2px;
+  border-style: solid;
+}

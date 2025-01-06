@@ -20,7 +20,7 @@ class UserCreateView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         serializer.save()
-        
+
 class UserLoginView(APIView):
     permission_classes = [AllowAny]
     
@@ -29,11 +29,11 @@ class UserLoginView(APIView):
         password = request.data.get("password")
         
         if not User.objects.filter(username=username).exists():
-            return Response({"error": "user does not exist"}, status=HTTP_404_NOT_FOUND)
+            return Response({"error": "User does not exist."}, status=HTTP_404_NOT_FOUND)
         
         user = authenticate(username=username, password=password)
         if user is None:
-            return Response({"error": "Authentication failed"}, status=HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Authentication failed."}, status=HTTP_401_UNAUTHORIZED)
         
         login(request, user)
         return Response(UserSerializer(user).data, status=HTTP_200_OK)
